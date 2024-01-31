@@ -4,6 +4,7 @@ Readme:
 - Week 2 Homework Answers, VIT 3 Project, 2024
 
 """
+
 students = {'Ahmet Yilmaz': [85, 90, 78],
             'Mehmet Demir': [92, 88, 76],
             'Ayse Kaya': [78, 89, 95],
@@ -24,24 +25,24 @@ def show_list(list1):  # This function represents the members of a list as a str
 
 
 if __name__ == '__main__':
-    print('Answer 1/1:\n')
+    print('\nAnswer 1/1:')
     for i in students:
         avg = float(format(sum(students[i]) / len(students[i]), '.2f'))
         students[i] += [avg]
-    # print(students)
+    print(students)
 
-    print('Answer 1/2:\n')
+    print('\nAnswer 1/2:')
 
     list_avg = []
-    excellent_students = []
+    excellent_students = []  # Maybe there are more students who have the same average.
     for i in students:
         list_avg += [students[i][3]]
     for i in students:
         if max(list_avg) == students[i][3]:
             excellent_students += [i]
-    #print('The most successful student(s): ', show_list(excellent_students))
+    print('The most successful student(s): ', show_list(excellent_students))
 
-    print('Answer 1/3:\n')
+    print('\nAnswer 1/3:')
     # Information Source: https://stackoverflow.com/questions/16449184/converting-string-to-tuple-without-splitting-characters
 
     name = []
@@ -50,10 +51,10 @@ if __name__ == '__main__':
     for i in students:
         full_name = i.split(' ')
         name, surname = tuple([full_name[0]]), tuple([full_name[1]])
-        full_names += [name, surname]   # If I had to place each person individually in the list item I would have to use this code: full_names += [[name, surname]]
-    #print(full_names)
+        full_names += [name, surname]  # If I had to place each person individually in the list item I would have to use this code: full_names += [[name, surname]]
+    print(full_names)
 
-    print('Answer 1/4:\n')
+    print('\nAnswer 1/4:')
 
     print('Only student names are sorted')
     print(sorted(students))
@@ -64,10 +65,9 @@ if __name__ == '__main__':
         students2 += [[i] + students[i]]
     print(students2)
 
-    print('Answer 1/5:\n')
+    print('\nAnswer 1/5:')
 
-    students_under70 = {''}
-    students_under70.clear()    # students_under70.remove('') - Alternative code
+    students_under70 = set()
     for i in students:
         if students[i][3] < 70:
             students_under70.add(i)
