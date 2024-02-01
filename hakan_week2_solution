@@ -1,0 +1,272 @@
+### Question 1: Student Grades Processing
+"""You need to write a Python program to process student grades. The program should perform the following functions:
+
+Store the information and grades of 10 students using a dictionary. Each student should have a name, surname, and grades (Midterm, Final, and Oral).
+
+1-Calculate the average grade for each student and add it to the dictionary.
+
+2-Find the student with the highest average grade and print it to the screen.
+
+3-Separate the first name of each student from their surname and store them in a tuple, then add these tuples to a list.
+
+4-Sort the list alphabetically by names and print the sorted list to the screen.
+
+5-Store the students with an average grade below 70 in a set.
+"""
+students = {
+    "johan cruyff": [70, 20, 30],
+    "diego maradona": [50, 20, 80],
+    "zinedine zidane": [60, 20, 50],
+    "roberto carlos": [10, 80, 90],
+    "gerd muller": [50, 90, 30],
+    "luis figo": [30, 50, 60],
+    "hugo sanchez": [40, 60, 30],
+    "michel platini": [10, 50, 36],
+    "christiano ronaldo": [50, 40, 50],
+    "leonel messi": [20, 90, 60]
+}
+# 1-Calculate each student's GPA and add it to the dictionary.
+# Assuming the GPA is calculated as the average of the three scores
+for name, scores in students.items():
+    # calculate the average of the scores
+    average = sum(scores) / len(scores)
+    # add the average to the dictionary as the GPA
+    students[name].append(average)
+
+# 2-Find the student with the highest GPA and print it on the screen.
+# initialize the highest GPA and the corresponding name
+# Calculate GPA for each student
+gpa_scores = {}
+for student, scores in students.items():
+    average_score = sum(scores) / len(scores)
+    gpa_scores[student] = average_score
+
+# Find the student with the highest GPA
+highest_gpa_student = max(gpa_scores, key=gpa_scores.get)
+
+print(f"The student with the highest GPA is: {highest_gpa_student}")
+
+# 3-Keep each student's name in a separate tuple, separating it from their surname, and add them to a list.
+# create an empty list to store the tuples
+
+students_list = [(name.split()[0], name.split()[1]) for name in students.keys()]
+
+# Display the list of tuples
+print("List of students' names:")
+print(students_list)
+
+# 4-Sort the names in alphabetical order and print the sorted list on the screen.
+# sort the list of tuples by the first element (first name)
+
+
+# Sort the names in alphabetical order
+sorted_names = sorted(students.keys())
+
+# Print the sorted list of names
+print("Sorted List of Names:")
+for name in sorted_names:
+    print(name)
+
+
+# 5-Keep students with a GPA below 70 in a set.
+# create an empty set to store the names
+low_gpa_students = set()
+# loop through the students dictionary
+for name, scores in students.items():
+    # get the GPA from the last element of the scores list
+    gpa = scores[-1]
+    # check if the GPA is below 70
+    if gpa < 70:
+        # add the name to the set
+        low_gpa_students.add(name)
+# print the set of students with low GPA
+print("The students with a GPA below 70 are:", low_gpa_students)
+
+
+### Question 2: Movie Library Management System Project
+"""
+Project Description: This project aims to create an application that assists users in managing their own film collection. Users can add, edit, delete films, and view their collections.
+
+Used Data Structures: Dictionaries (to store films and related information), Lists (to display the film collection).
+
+Core Functions:
+
+Create film data by obtaining information such as the film title, director, release year, and genre from the user, and store this data in a dictionary.
+
+Provide the user with the option to edit or delete a film. (For this, functions need to be written to modify the relevant data of the film.)
+
+Allow the user to view their collection. List all films or filter based on criteria such as genre or release year.
+
+Store film data in a file and reload this data when the program is started.
+"""
+# Existing movies dictionary
+  movies = {
+    "movie1": {'title': 'Inception', 'director': 'Christopher Nolan', 'year': 2010, 'genre': 'Sci-Fi'},
+    "movie2": {'title': 'The Shawshank Redemption', 'director': 'Frank Darabont', 'year': 1994, 'genre': 'Drama'},
+    "movie3": {'title': 'Titanic', 'director': 'James Cameron', 'year': 1997, 'genre': 'Drama'},
+    "movie4": {'title': 'Matrix', 'director': 'Lana Wachowski', 'year': 1999, 'genre': 'Sci-Fi'},
+    "movie5": {'title': 'God Father', 'director': 'Francis Ford Coppola', 'year': 1972, 'genre': 'Drama'},
+}
+# Initialize an empty list to store movie dictionaries
+movies = []
+
+# Get information for each movie from the user until they decide to stop
+while True:
+    title = input("Enter the title (or type 'stop' to finish): ")
+
+    # Check if the user wants to stop entering movies
+    if title.lower() == 'stop':
+        break
+
+    director = input("Enter the director: ")
+    year = int(input("Enter the year of release: "))
+    genre = input("Enter the genre of the movie: ")
+
+    # Create a dictionary for the movie and add it to the list
+    movies.append({'title': title, 'director': director, 'year': year,"genre": genre})
+# Get movie ID from the user
+movie_id = input("Movie ID: ")
+
+# Check if the movie ID exists in the dictionary
+if movie_id in movies:
+    # Get attribute and new value from the user
+    attribute = input("Attribute to be updated: ")
+    new_value = input("New value: ")
+
+    # Update the dictionary
+    movies[movie_id][attribute] = new_value
+    print(f"Updated movie {movie_id}: {movies[movie_id]}")
+else:
+    print(f"Movie with ID {movie_id} not found.")
+  
+# Create a new dictionary for drama movies
+drama_movies = {key: movie for key, movie in movies.items() if movie['genre'] == 'Drama'}
+
+# Display drama movies
+print("Drama Movies:")
+print(drama_movies)
+
+# Write data to a file
+with open("movies.txt", "w") as f:
+    f.write("Veriler burada!")
+
+# Reading data from a file
+with open("movies.txt", "r") as f:
+    movies = f.read()
+    print(movies)
+
+
+### Question 3: Customer Management System
+"""
+Project Description: This project involves creating a customer management system that allows you to manage your customers and perform basic operations. The system will have fundamental functionalities such as storing customer information, adding new customers, updating customer information, deleting customers, and displaying the list of customers. Here are the basic steps for the project:
+
+Use a dictionary structure to store customer information. Assign a unique customer identifier (ID) to each customer and associate customer information with this ID. You can use a dictionary for each customer, including information such as first name, last name, email, and phone.
+
+Provide the user with a menu where they can choose the following operations:
+
+* Add a new customer
+* Update customer information
+* Delete a customer
+* Display all customers
+* Exit the system
+Based on the user's selection, perform the corresponding operation. For example, when adding a new customer, prompt the user for the required information and add a new customer to the dictionary.
+
+When updating customer information, display the current information using the customer ID and save the updated information.
+
+For the customer deletion process, take the customer ID from the user and remove that customer from the dictionary.
+
+In the operation to display all customers, show the list of existing customers.
+
+Repeat the operations until the user chooses to exit.
+"""
+  customers = {}
+current_id = 1
+
+
+def add_customer(name, surname, email, phone):
+    global current_id
+    customer_id = current_id
+    customer_info = {'Name': name, 'Surname': surname, 'Email': email, 'Phone': phone}
+    customers[customer_id] = customer_info
+    current_id += 1
+    print(f"Customer added successfully. Customer ID: {customer_id}")
+
+
+def list_all_customers():
+    print("\nCustomer List:")
+    for customer_id, customer_info in customers.items():
+        print(
+            f"ID: {customer_id}, Name: {customer_info['Name']}, Surname: {customer_info['Surname']}, Email: {customer_info['Email']}, Phone: {customer_info['Phone']}")
+
+
+def delete_customer(customer_id):
+    if customer_id in customers:
+        del customers[customer_id]
+        print("Customer deleted successfully.")
+    else:
+        print("Customer not found.")
+
+
+def update_customer(customer_id, name, surname, email, phone):
+    if customer_id in customers:
+        print("\nExisting Customer Information:")
+        print(
+            f"ID: {customer_id}, Name: {customers[customer_id]['Name']}, Surname: {customers[customer_id]['Surname']}, Email: {customers[customer_id]['Email']}, Phone: {customers[customer_id]['Phone']}")
+
+        update_choice = input("Do you want to update this customer? (yes/no): ")
+        if update_choice.lower() == 'yes':
+            customers[customer_id]['Name'] = name
+            customers[customer_id]['Surname'] = surname
+            customers[customer_id]['Email'] = email
+            customers[customer_id]['Phone'] = phone
+            print("Customer information updated successfully.")
+        else:
+            print("Customer information not updated.")
+    else:
+        print("Customer not found.")
+
+
+def checkout():
+    print("Thank you for using the Customer Management System!")
+
+
+# Main program
+while True:
+    print("\nMenu:")
+    print("1. Add a new customer")
+    print("2. List all customers")
+    print("3. Update customer information")
+    print("4. Delete a customer")
+    print("5. Check out")
+
+    choice = input("Enter your choice (1-5): ")
+
+    if choice == '1':
+        name = input("Enter customer's name: ")
+        surname = input("Enter customer's surname: ")
+        email = input("Enter customer's email: ")
+        phone = input("Enter customer's phone: ")
+        add_customer(name, surname, email, phone)
+
+    elif choice == '2':
+        list_all_customers()
+
+    elif choice == '3':
+        customer_id = int(input("Enter customer ID to update: "))
+        name = input("Enter new name (press Enter to keep existing): ")
+        surname = input("Enter new surname (press Enter to keep existing): ")
+        email = input("Enter new email (press Enter to keep existing): ")
+        phone = input("Enter new phone (press Enter to keep existing): ")
+        update_customer(customer_id, name, surname, email, phone)
+
+    elif choice == '4':
+        customer_id = int(input("Enter customer ID to delete: "))
+        delete_customer(customer_id)
+
+    elif choice == '5':
+        checkout()
+        break
+
+    else:
+        print("Invalid choice. Please enter a number between 1 and 5.")
+
