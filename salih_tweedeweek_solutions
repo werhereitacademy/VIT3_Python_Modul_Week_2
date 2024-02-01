@@ -1,0 +1,266 @@
+
+#1) The solution of the first problem
+students = {
+'Ahmet Yilmaz': [50,60,70],
+'Mehmet Korkmaz': [40,50,60],
+'Ali Saglam' : [20,30,40],
+'Kamil Ekmek' : [80,90,50],
+'Ata Demir' : [10,60,70],
+'Halil Yaz' : [70,40,70],
+'Mustafa Kose' : [80,50,90],
+'Hilmi Tor' : [20,60, 560],
+'Ramazan Ak' : [30,70,80],
+'Arif Ok' : [50,80,100]
+}
+under_seventy = set()
+average_float = 0
+highest_num = 0
+for key, values in students.items():
+    average = sum(values) / len(values)
+    average_float = float('{:.2f}'.format(average))
+    values.append(average_float)
+    if average_float > float(highest_num):
+        highest_num = average_float
+    if average_float < 70:
+        under_seventy.add(key)
+print(f'The average scores added: {students}')
+print(f'{key} has the highest average score: {highest_num}')
+print(f'The students who have an average score under 70: {under_seventy}')
+
+names_list = []
+for key in students.keys():
+    names = tuple(key.split())
+    names_list.append(names)
+print(f'The students\' names and surnames separated in tuples: {names_list}')
+
+sorted_students = sorted(students.items())
+print(f'The students in alphabetical order: {sorted_students}')
+
+
+#2 The solution of the second problem
+import json
+def film_add(films_library):
+    film_title = input('Enter the title of the film: ')
+    film_director = input('Enter the name of the director: ')
+    film_year = input('Enter the year of the film: ')
+    film_genre = input('Enter the genre of the film: ')
+
+    film_data = {
+        'director': film_director,
+        'year': int(film_year),
+        'genre': film_genre,
+    }
+
+    films_library[film_title] = film_data
+    print(f'{film_title} has been added to your collection.')
+
+def film_edit(films_library, film_title):
+    if film_title in films_library:
+        print(f'Editing {film_title}:')
+        print(f'1. Director: {films_library[film_title]["director"]}')
+        print(f'2. Year: {films_library[film_title]["year"]}')
+        print(f'3. Genre: {films_library[film_title]["genre"]}')
+        def get_key_by_choice(choice):
+            keys = {'1': 'director', '2': 'year', '3': 'genre'}
+            return keys.get(choice, None)
+
+        choice = input('Enter the number of the information you want to edit: ')
+        if choice in ['1', '2', '3']:
+            new_value = input(f'Enter the new value for {films_library[film_title][get_key_by_choice(choice)]}: ')
+            if choice == '2':
+                new_value = int(new_value)
+            
+            films_library[film_title][get_key_by_choice(choice)] = new_value
+            print(f'{film_title} has been updated.')
+        else:
+            print('Invalid choice.')
+    else:
+        print(f'{film_title} is not in your collection.')
+
+def film_del(films_library, film_title):
+    if film_title in films_library:
+        del films_library[film_title]
+        print(f'{film_title} has been removed from your collection.')
+    else:
+        print(f'{film_title} is not in your collection.')
+
+def film_list(films_library, filter_key, filter_value):
+    if filter_key == 'year':
+        filtered_films = {title: data for title, data in films_library.items()
+                          if data.get(filter_key) == int(filter_value)}
+    else:
+        filtered_films = {title: data for title, data in films_library.items()
+                          if data.get(filter_key) == filter_value}
+    
+    for title, data in filtered_films.items():
+        print(f'{title}: {data}')
+
+def film_library_save(films_library):
+    with open('films.json', 'w') as file:
+        json.dump(films_library, file)
+    print('Your film library has been saved.')
+    print(films_library)
+def film_library_load():
+    try:
+        with open('films.json', 'r') as file:
+            films_library = json.load(file)
+        print('Your film library has been loaded.')
+        return films_library
+    except FileNotFoundError:
+        print('No existing film library found. Starting with an empty library.')
+        return {}
+
+films_library = film_library_load()
+print(films_library)
+while True:
+    print("\nFilm Library Management System\n")
+    print("1. Add a Film")
+    print("2. Edit a Film")
+    print("3. Delete a Film")
+    print("4. Filter the films")
+    print("5. Save and view the film Library")
+    print("6. Exit")
+
+    choice = input("\nEnter your choice (1-6): ")
+
+    if choice == '1':
+        film_add(films_library)
+    elif choice == '2':
+        film_title = input('Enter the title of the film you want to edit: ')
+        film_edit(films_library, film_title)
+    elif choice == '3':
+        film_title = input('Enter the title of the film you want to delete: ')
+        film_del(films_library, film_title)
+    elif choice == '4':
+        filter_key = input('Enter the filter key (director, year, genre): ')
+        filter_value = input('Enter the filter value: ')
+        film_list(films_library, filter_key, filter_value)
+    elif choice == '5':
+        film_library_save(films_library)
+    elif choice == '6':
+        break
+    else:
+        print('Invalid choice. Please enter a number between 1 and 6.')
+
+
+#3 The solution of the third problem
+import json
+import random
+
+customer_data = {}
+used_customer_ids = set()
+json_filename = "customer_info.json"
+
+def save_data_to_json():
+    with open(json_filename, 'w') as file:
+        json.dump(customer_data, file, indent=2)
+
+def load_data_from_json():
+    try:
+        with open(json_filename, 'r') as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+def generate_customer_id():
+    while True:
+        customer_id = str(random.randint(10000, 99999))
+        
+        if customer_id not in used_customer_ids:
+            used_customer_ids.add(customer_id)
+            return customer_id
+
+def add_customer():
+    print("Adding a new customer")
+    customer_id = generate_customer_id()
+    name = input("Enter your first name: ")
+    surname = input("Enter your last name: ")
+    email = input("Enter your email address: ")
+    phone = input("Enter your phone number: ")
+
+    customer_data[customer_id] = {
+        'name': name,
+        'surname': surname,
+        'email': email,
+        'phone': phone
+    }
+
+    print(f"Customer ID: {customer_id}")
+    print(f"{name} {surname} has been successfully added as a customer.")
+
+def update_customer():
+    print("Updating customer information")
+    customer_id = input("Enter the customer ID to update: ")
+
+    if customer_id in customer_data:
+        current_info = customer_data[customer_id]
+        print("\nCurrent Customer Information:")
+        print(f"First Name: {current_info['name']}")
+        print(f"Last Name: {current_info['surname']}")
+        print(f"Email: {current_info['email']}")
+        print(f"Phone: {current_info['phone']}")
+
+        choice = input("\nEnter any key to update information (press Enter to skip): ")
+
+        if choice.strip():
+            customer_data[customer_id]['name'] = input("Enter the new first name(press Enter to skip): ") or current_info['name']
+            customer_data[customer_id]['surname'] = input("Enter the new last name(press Enter to skip): ") or current_info['surname']
+            customer_data[customer_id]['email'] = input("Enter the new email(press Enter to skip): ") or current_info['email']
+            customer_data[customer_id]['phone'] = input("Enter the new phone number(press Enter to skip): ") or current_info['phone']
+
+            print("\nCustomer information has been successfully updated.")
+        else:
+            print("No changes have been made.")
+    else:
+        print("Customer not found.")
+
+def delete_customer():
+    print("Deleting a customer")
+    customer_id = input("Enter the customer ID to delete: ")
+
+    if customer_id in customer_data:
+        used_customer_ids.remove(customer_id)
+        del customer_data[customer_id]
+        print("Customer has been successfully deleted.")
+    else:
+        print("Customer not found.")
+
+def list_all_customers():
+    print("Listing all customers")
+    if not customer_data:
+        print("No registered customers.")
+    else:
+        for customer_id, customer_info in customer_data.items():
+            print(f"\nCustomer ID: {customer_id}")
+            print(f"First Name: {customer_info['name']}")
+            print(f"Last Name: {customer_info['surname']}")
+            print(f"Email: {customer_info['email']}")
+            print(f"Phone: {customer_info['phone']}")
+
+customer_data = load_data_from_json()
+
+while True:
+    print("\nCustomer Management System")
+    print("1. Add a new customer")
+    print("2. Update customer information")
+    print("3. Delete a customer")
+    print("4. List all customers")
+    print("5. Exit")
+
+    choice = input("Please enter a number (1-5): ")
+
+    if choice == '1':
+        add_customer()
+    elif choice == '2':
+        update_customer()
+    elif choice == '3':
+        delete_customer()
+    elif choice == '4':
+        list_all_customers()
+    elif choice == '5':
+        print("Exiting...")
+        save_data_to_json()
+        break
+    else:
+        print("Invalid choice. Please enter a number between 1 and 5.")
+
