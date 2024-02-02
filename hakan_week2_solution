@@ -99,61 +99,96 @@ Allow the user to view their collection. List all films or filter based on crite
 
 Store film data in a file and reload this data when the program is started.
 """
-# Existing movies dictionary
-  movies = {
-    "movie1": {'title': 'Inception', 'director': 'Christopher Nolan', 'year': 2010, 'genre': 'Sci-Fi'},
-    "movie2": {'title': 'The Shawshank Redemption', 'director': 'Frank Darabont', 'year': 1994, 'genre': 'Drama'},
-    "movie3": {'title': 'Titanic', 'director': 'James Cameron', 'year': 1997, 'genre': 'Drama'},
-    "movie4": {'title': 'Matrix', 'director': 'Lana Wachowski', 'year': 1999, 'genre': 'Sci-Fi'},
-    "movie5": {'title': 'God Father', 'director': 'Francis Ford Coppola', 'year': 1972, 'genre': 'Drama'},
-}
-# Initialize an empty list to store movie dictionaries
-movies = []
+import json
 
-# Get information for each movie from the user until they decide to stop
+filmLibrary = []
+
+def addMovie():
+    title = input("Enter the movie title: ")
+    director = input("Enter the director's name: ")
+    releaseYear = input("Enter the release year: ")
+    genre = input("Enter the movie genre: ")
+
+    movie = {
+        'title': title,
+        'director': director,
+        'releaseYear': releaseYear,
+        'genre': genre
+    }
+
+    filmLibrary.append(movie)
+    print(f"{title} movie added to the collection.")
+
+def viewCollection():
+    for movie in filmLibrary:
+        print(f"Movie Title: {movie['title']}, Director: {movie['director']}, Release Year: {movie['releaseYear']}, Genre: {movie['genre']}")
+
+def editMovie():
+    title = input("Enter the title of the movie you want to edit: ")
+    
+    for movie in filmLibrary:
+        if movie['title'] == title:
+            movie['director'] = input("Enter the new director's name: ")
+            movie['releaseYear'] = input("Enter the new release year: ")
+            movie['genre'] = input("Enter the new movie genre: ")
+            print(f"{title} movie edited.")
+            return
+
+    print(f"{title} movie not found.")
+
+def deleteMovie():
+    title = input("Enter the title of the movie you want to delete: ")
+
+    for movie in filmLibrary:
+        if movie['title'] == title:
+            filmLibrary.remove(movie)
+            print(f"{title} movie deleted.")
+            return
+
+    print(f"{title} movie not found.")
+
+def saveData():
+    with open("filmLibrary.json", "w") as file:
+        json.dump(filmLibrary, file)
+
+def loadData():
+    try:
+        with open("filmLibrary.json", "r") as file:
+            data = json.load(file)
+            filmLibrary.extend(data)
+    except FileNotFoundError:
+        pass
+
+# Load Data
+loadData()
+
+# User interface
 while True:
-    title = input("Enter the title (or type 'stop' to finish): ")
+    print("\n1. Add Movie")
+    print("2. View Collection")
+    print("3. Edit Movie")
+    print("4. Delete Movie")
+    print("5. Exit")
 
-    # Check if the user wants to stop entering movies
-    if title.lower() == 'stop':
+    choice = input("Select the operation you want to perform (1-5): ")
+
+    if choice == '1':
+        addMovie()
+        saveData()
+    elif choice == '2':
+        viewCollection()
+    elif choice == '3':
+        editMovie()
+        saveData()
+    elif choice == '4':
+        deleteMovie()
+        saveData()
+    elif choice == '5':
         break
+    else:
+        print("Invalid option. Please try again.")
 
-    director = input("Enter the director: ")
-    year = int(input("Enter the year of release: "))
-    genre = input("Enter the genre of the movie: ")
 
-    # Create a dictionary for the movie and add it to the list
-    movies.append({'title': title, 'director': director, 'year': year,"genre": genre})
-# Get movie ID from the user
-movie_id = input("Movie ID: ")
-
-# Check if the movie ID exists in the dictionary
-if movie_id in movies:
-    # Get attribute and new value from the user
-    attribute = input("Attribute to be updated: ")
-    new_value = input("New value: ")
-
-    # Update the dictionary
-    movies[movie_id][attribute] = new_value
-    print(f"Updated movie {movie_id}: {movies[movie_id]}")
-else:
-    print(f"Movie with ID {movie_id} not found.")
-  
-# Create a new dictionary for drama movies
-drama_movies = {key: movie for key, movie in movies.items() if movie['genre'] == 'Drama'}
-
-# Display drama movies
-print("Drama Movies:")
-print(drama_movies)
-
-# Write data to a file
-with open("movies.txt", "w") as f:
-    f.write("Veriler burada!")
-
-# Reading data from a file
-with open("movies.txt", "r") as f:
-    movies = f.read()
-    print(movies)
 
 
 ### Question 3: Customer Management System
@@ -179,7 +214,7 @@ In the operation to display all customers, show the list of existing customers.
 
 Repeat the operations until the user chooses to exit.
 """
-  customers = {}
+customers = {}
 current_id = 1
 
 
