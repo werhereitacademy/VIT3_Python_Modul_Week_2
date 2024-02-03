@@ -49,8 +49,6 @@ below_70_set = {student for student, grades in students.items() if grades[-1] < 
 
 print("Not ortalaması 70'in altında olan öğrencilerin kümesi:", below_70_set)
 
-# Film Collection Management
-
 # Create a dictionary to store the film collection
 film_collection = {}
 
@@ -104,6 +102,22 @@ def view_collection():
         print(f"Genre: {data['Genre']}")
         print("-" * 30)
 
+import json
+
+# Function to load data
+def load_data():
+    try:
+        with open("film_library.json", "r") as file:
+            film_collection.update(json.load(file))
+    except FileNotFoundError:
+        pass
+
+# Function to save data
+def save_data():
+    with open("film_library.json", "w") as file:
+        json.dump(film_collection, file)
+
+
 while True:
     print("\nFilm Collection Management")
     print("1. Add Film")
@@ -126,9 +140,14 @@ while True:
         delete_film(film_name)
         
     elif choice == '4':
+        
+        # Load the saved film collection
+        load_data() 
         view_collection()
         
     elif choice == '5':
+        # Save the film collection when exiting the program
+        save_data()
         print("Exiting the program...")
         break
     else:
