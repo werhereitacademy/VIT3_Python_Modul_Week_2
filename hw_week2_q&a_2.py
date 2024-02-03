@@ -49,7 +49,7 @@ def quit_app():
 
 # main program
 if __name__ == '__main__':
-    with (shelve.open("movie_data.shelve") as the_movie_data):
+    with (shelve.open("movie_datas.shelve") as the_movie_data):
         print("Welcome to the Movie List program")
         help_app()
         user_input = "dummy"
