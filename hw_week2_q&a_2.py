@@ -19,7 +19,7 @@ def get_movie(movie_data, movie_name):
         data = movie_data.get(movie_name)
         answer = True
     else:
-        data = "dummy data"
+        data = 'dummy data'
         answer = False
     return answer, data
 
