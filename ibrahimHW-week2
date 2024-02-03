@@ -1,0 +1,288 @@
+#Ten students with their midterm, final and oral test results
+
+students= \
+    {"Basri Özakıncı": [99, 89, 93],
+"Sebastian Carter": [37, 99, 33],
+"Maya Partel": [47, 89, 43],
+"Ethan Thompson": [57, 79, 93],
+"Zoe Rodriguez": [67, 69, 93],
+"Liam Foster": [77, 59, 83],
+"Ara Guven": [77, 49, 63],
+"Jackson Wallace": [67, 39, 73],
+"Sophia Jansen": [97, 29, 83],
+"Manon Taylor": [47, 89, 93],
+}
+
+#Ans1 - Calculate each student's GPA and add it to the dictionary.:
+for i,j in students.items():
+    avg=int(sum(j)/len(j))
+    students[i].append(avg)
+print(students)
+
+#Ans2 - Find the student with the highest GPA and print it on the screen.
+Student_with_Topgrade = max(students, key=lambda x: students[x][-1])
+
+print("Student with Highest average:", Student_with_Topgrade)
+print(" His/Her Cumulative Grade:", students[Student_with_Topgrade][-1])
+
+#Ans3 - Separate each student's name from their surname and store them in a separate tuple and add them to a list.
+name_list = []
+for student in students:
+    name, surname = student.split()
+    name_list.append((name, surname))
+print(name_list)
+
+#Ans4 - Sort the names alphabetically and print the sorted list to the screen.
+# Sorting the list alphabetically
+sorted_names = sorted(students)
+
+# Printing the sorted list
+for name in sorted_names:
+    print(name)
+
+#Ans5 - Keep students with GPA below 70 in a cluster (set).
+studentsbelow70 = {j for j in students if students[j][3] < 70}
+print("Students whose average grades are below 70:")
+for j in studentsbelow70:
+    print(j)
+
+#################################Question Number 2######################################
+# Question 2: Film Library Management System Project
+# Project Description: This project aims to create an application that will help the user manage their movie collection. Users can add, edit, delete movies and view their collection.
+
+# Data Structures Used: Dictionaries (to store movies and related information), lists (to display movie collection)
+
+# Basic Functions:
+
+# 1-Create a movie data by getting information such as movie name, director, release year and genre from the user and store it in a dictionary.
+
+#2-Give the user the option to edit or delete a movie. (For this, a suitable function must be written for whatever data they want to change about the movie.)
+
+#3-Allow the user to view their collection. List all movies or filter by criteria such as genre or year of release.
+
+#4-Save the movie data in a file and restore this data when you start the program.
+
+
+# Create a dictionary to store movie collection
+movie_collection = {}
+
+
+# Add a new movie
+def addmovie():
+    moviename = input("Movie Name: ")
+    director = input("Name of the director: ")
+    release_year = input("Release Year: ")
+    genre = input("Genre of the movie: ")
+
+    movie = {
+        'Movie Name': moviename,
+        'director': director,
+        'Release Year': release_year,
+        'genre': genre
+    }
+
+    movie_collection[moviename] = movie
+    print(f"{moviename} added to collection.")
+
+
+#Edit a movie
+def editmovie(moviename):
+    if moviename in movie_collection:
+        print(f"{moviename} editing...")
+        newinputs = {}
+        newinputs['Name of the movie'] = input(f"New Name of the movie ({movie_collection[moviename]['Name of the movie']}): ")
+        newinputs['director'] = input(f"New director ({movie_collection[moviename]['director']}): ")
+        newinputs['Release Year'] = input(f"New Release Year ({movie_collection[moviename]['Release Year']}): ")
+        newinputs['genre'] = input(f"New genre ({movie_collection[moviename]['genre']}): ")
+
+        movie_collection[moviename] = newinputs
+        print(f"{moviename} updated.")
+    else:
+        print(f"{moviename} couldn't be found in the collection.")
+
+
+# Deleting a movie
+def deletemovie(moviename):
+    if moviename in movie_collection:
+        del movie_collection[moviename]
+        print(f"{moviename} deleted from the collection.")
+    else:
+        print(f"{moviename} couldn't be found in the collection.")
+
+
+#View the collection
+def monitorcollection():
+    print("\nMovie collection:")
+    for moviename, data in movie_collection.items():
+        print(f"Name of the movie: {data['Name of the movie']}")
+        print(f"director: {data['director']}")
+        print(f"Release Year: {data['Release Year']}")
+        print(f"genre: {data['genre']}")
+
+
+while True:
+    print("\nMovie Collection Management")
+    print("1. Add Movie")
+    print("2. Edit Movie")
+    print("3. Delete Movie")
+    print("4. Show collection")
+    print("5. Exit")
+
+    choice = input("Select the action you want to perform: ")
+
+    if choice == '1':
+        addmovie()
+
+    elif choice == '2':
+        moviename = input("Enter the movie name you want to edit: ")
+        editmovie(moviename)
+
+    elif choice == '3':
+        moviename = input("Enter the movie name you want to delete: ")
+        deletemovie(moviename)
+
+    elif choice == '4':
+        monitorcollection()
+    elif choice == '5':
+
+        print("Exiting the program...")
+        break
+    else:
+        print("Invalid option! Please try again.")
+
+# Possible addition for option 4
+
+import json
+
+
+# Function to load data
+def load_data():
+    try:
+        with open("movie_collection.json", "r") as file:
+            movie_collection.update(json.load(file))
+    except FileNotFoundError:
+        pass
+
+
+# Data saving function
+def save_data():
+    with open("movie_collection.json", "w") as file:
+        json.dump(movie_collection, file)
+
+#################################Question Number 3######################################
+# Project Description: This project involves you creating a customer management system that you can use to manage your customers and perform basic transactions. This system will have basic functions such as storing customer information, adding new customers, updating customer information, deleting customers and viewing the customer list. Here are the basic steps of the project:
+
+#1-Use a dictionary structure to store customer information. Assign a unique customer identification (ID) for each customer and associate customer information with this ID. You can use a dictionary containing information such as name, surname, e-mail, phone number for each customer.
+
+#2-Provide a menu where the user can choose the following actions:
+
+# Add new customer
+# Update customer information
+# delete customer
+# List all customers
+# Check out
+#3-Perform the relevant action as per the user's choice. For example, when adding a new customer, get the required information from the user and add a new customer to the dictionary.
+
+#4-When updating customer information, view the current information using the customer ID and save the updated information.
+
+#5-In the customer deletion process, get the customer ID from the user and delete this customer from the dictionary.
+
+#6-In the process of listing all customers, view the list of existing customers.
+
+#7-Repeat the process until the user logs out.
+
+# Create a dictionary to store customer information (customer ID is used as key)
+customers = {}
+# Add new customer
+def new_customer_add():
+     customer_id = input("Enter Customer ID: ")
+     name = input("Enter your name: ")
+     surname = input("Enter your surname: ")
+     email = input("Enter your email address: ")
+     phone = input("Enter your phone number: ")
+
+     customer = {
+         'Name': name,
+         'Surname': surname,
+         'Email': email,
+         'phone': phone
+     }
+
+     customers[customer_id] = customer
+     print(f"{name} {surname} customer has been added.")
+
+# Update customer information
+def customer_upcelle():
+     customer_id = input("Enter the ID of the customer you want to update: ")
+
+     if customer_id in customers:
+         print(f"Current information of customer {custeri_id}:")
+         current_customer = customers[customer_id]
+         for key, value in current_customer.items():
+             print(f"{key}: {value}")
+
+         name = input("Enter the new name (leave blank if you do not want to change): ")
+         surname = input("Enter new surname (leave blank if you do not want to change): ")
+         email = input("Enter the new email (leave blank if you do not want to change): ")
+         phone = input("Enter the new phone number (leave blank if you do not want to change): ")
+
+         if name:
+             current_customer['Name'] = name
+         if surname:
+             current_customer['Surname'] = surname
+         if email:
+             current_customer['Email'] = email
+         if phone:
+             current_customer['Phone'] = phone
+
+         customers[customer_id] = current_customer
+         print(f"{custeri_id} customer information has been updated.")
+     else:
+         print(f"Customer {customer_id} could not be found.")
+
+# delete customer
+def customer_delete():
+     customer_id = input("Enter the ID of the customer you want to delete: ")
+
+     if customer_id in customers:
+         deleted_customer = customers.pop(customer_id)
+         print(f"{deleted_customer['Name']} {deleted_customer['Surname']} customer has been deleted.")
+     else:
+         print(f"Customer {customer_id} could not be found.")
+
+# List all customers
+def customers_list():
+     if len(customers) == 0:
+         print("No customer records yet.")
+     else:
+         print("\nAll Customers:")
+         for customer_id, customer in customer.items():
+             print(f"Customer ID: {customer_id}")
+             for key, value in customer.items():
+                 print(f"{key}: {value}")
+             print("-" * 30)
+
+# Main program loop
+while True:
+     print("\nCustomer Management System")
+     print("1. Add New Customer")
+     print("2. Update Customer Information")
+     print("Delete Customer 3")
+     print("4. List All Customers")
+     print("5th Output")
+
+     selection = input("Select the action you want to perform: ")
+
+     if selection == '1':
+         new_customer_add()
+     elif selection == '2':
+         customer_update()
+     elif selection == '3':
+         customer_delete()
+     elif selection == '4':
+         customers_list()
+     elif selection == '5':
+         print("Exiting the program...")
+         break
+     else:
+         print("Invalid option! Please try again.")
