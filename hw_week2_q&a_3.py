@@ -12,18 +12,21 @@ def add_customer(customer_data, customer_name, customer_surname, customer_email,
         return True
     else:
         if not (customer_name in customer_data and customer_surname in customer_data and customer_email in customer_data and customer_phone in customer_data):
-            customer_id = str(len(customer_data) + 1001)
+            customer_id = str(int([x for x in customer_data][-1]) + 1)
             customer_data[customer_id] = [customer_name, customer_surname, customer_email, customer_phone]
             return True
         else:
             return False
 
 
-def get_list():
-    pass
+def get_list(customer_data):
+    result = []
+    print(f'ID\tName\tSurname\tEmail\tPhone\n')
+    for i in customer_data:
+        result += [f'{i}\t{customer_data[i][0]}\t{customer_data[i][1]}\t{customer_data[i][2]}\t{customer_data[i][3]}']
+    return result
 
-
-def update_movie(customer_data, customer_id, customer_name, customer_surname, customer_email, customer_phone):
+def update_customer(customer_data, customer_id, customer_name, customer_surname, customer_email, customer_phone):
     if check_customer(customer_data, customer_id):
         customer_data[customer_id] = customer_name, customer_surname, customer_email, customer_phone
         return True
@@ -37,6 +40,8 @@ def remove_customer(customer_data, customer_id):
         return True
     else:
         return False
+
+
 def get_customer(customer_data, customer_id):
     if customer_id in customer_data:
         data = customer_data.get(customer_id)
@@ -45,6 +50,7 @@ def get_customer(customer_data, customer_id):
         data = 'dummy data'
         answer = False
     return answer, data
+
 
 def help_app():
     print("You can do getlist / add / update / remove; type quit to stop")
@@ -61,10 +67,12 @@ if __name__ == '__main__':
         help_app()
         user_input = "dummy"
         while user_input != "quit":
-            user_input = input("What would you like to do: ")
+            user_input = input("What would you like to do: ").strip()
 
             if user_input == "getlist":
-                pass
+                data = get_list(the_customer_data)
+                for i in data:
+                    print(i)
 
             elif user_input == "add":
                 the_customer_infos = input(
@@ -86,10 +94,40 @@ if __name__ == '__main__':
                           'Reason: The customer, you want to add is already in the CMS!')
 
             elif user_input == "update":
-                pass
+                data = get_list(the_customer_data)
+                for i in data:
+                    print(i)
+                the_customer_id = input('Input the Customer ID that you want to update/edit: Tip: Only permitted to change customer information "EXCEPT Customer ID": ')
+                result, the_data = get_customer(the_customer_data, the_customer_id)
+                if result:
+                    print(f"The customer info for ID= {the_customer_id} is:\nName: {the_data[0]}\nSurname: {the_data[1]}\nEmail: {the_data[2]}\nPhone Number: {the_data[3]}")
+                    the_data = input(
+                    'Please add your customer\'s new information by placing a comma between Name, Surname, Email and Phone Number:\n')
+                    the_data = the_data.strip().split(',')
+                    for i in range(len(the_data)):  # make values perfect
+                        the_data[i] = the_data[i].strip()
+                    result = update_customer(the_customer_data, the_customer_id, the_data[0], the_data[1], the_data[2], the_data[3])
+                    if result:
+                        print('Update process is SUCCESSFUL!')
+                    else:
+                        print('Update process is UNSUCCESSFUL!\nReason: The customer you want to update is ALREADY NOT in '
+                            'the CMS!')
+                else:
+                    print('Update is IMPOSSIBLE!!!\nReason: The customer you want to update is ALREADY NOT in '
+                          'the CMS!')
+
 
             elif user_input == "remove":
-                pass
+                the_data = get_list(the_customer_data)
+                for i in the_data:
+                    print(i)
+                the_customer_id = input("Which customer(ID) do you want to remove from CMS? :")
+                result = remove_customer(the_customer_data, the_customer_id)
+                if result:
+                    print(f'The customer whose ID = {the_customer_id} is successfully deleted from the CMS.')
+                else:
+                    print('Removing the customer is UNSUCCESSFUL!\n'
+                          'Reason: The customer you want to delete is ALREADY NOT in the CMS!')
 
             elif user_input == "lookup":
                 the_customer_id = input("Which customer id do you want to lookup? ")
